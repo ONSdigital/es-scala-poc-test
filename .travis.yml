@@ -1,0 +1,30 @@
+sudo: false
+language: scala
+scala:
+  - 2.11.11
+env:
+  global:
+    - OWNER=ons
+    - ALGORITHM_NAME=atestedscalaalgorithm
+    - ALGORITHMIA_USER=travis
+    - ES_ALGORITHMIA_API_ADDRESS=https://api.algpoc.com
+    - ES_ALGORITHM_DESCRIPTOR=$OWNER/$ALGORITHM_NAME/$TRAVIS_COMMIT
+script:
+  - sbt ++$TRAVIS_SCALA_VERSION test
+jdk:
+  - oraclejdk8
+deploy:
+  - provider: script
+    skip_cleanup: true
+    script: bash scripts/deploy.sh -a $ALGORITHM_NAME -u $ALGORITHMIA_USER -p $ALGORITHMIA_PASSWORD
+    on:
+      branch: master
+      tags: false
+  - provider: script
+    skip_cleanup: true
+    script: bash scripts/publish.sh -a $ALGORITHM_NAME -k $ES_ALGORITHMIA_API_KEY -t $TRAVIS_TAG -g $TRAVIS_REPO_SLUG
+    on:
+      branch: master
+      tags: true
+after_deploy:
+  - sbt ++$TRAVIS_SCALA_VERSION it:test

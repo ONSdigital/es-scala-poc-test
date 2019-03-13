@@ -4,12 +4,12 @@
 
 name := "atestedscalaalgorithm"
 
-organization := "algorithmia"
+organization := "ons"
 
 // Allow version to be overwritten with "-DalgoVersion=XXX"
 version := System.getProperty("algo.version", "1.0-SNAPSHOT")
 
-scalaVersion := "2.11.11"
+scalaVersion := "2.11.8"
 
 mainClass in Compile := Some("algorithmia.Main")
 
@@ -25,9 +25,13 @@ libraryDependencies ++= Seq(
   "com.google.code.gson" % "gson" % "2.5"
 )
 
-libraryDependencies += "org.scalatest" % "scalatest_2.11" % "3.0.1" % "test"
+libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.1" % s"$Test, $IntegrationTest"
 
 retrieveManaged := true
 
 // Don't convert name to lowercase
 normalizedName := name.value
+
+// for system tests
+configs(IntegrationTest)
+Defaults.itSettings

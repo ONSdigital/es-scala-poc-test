@@ -6,3 +6,7 @@
 // libraryDependencies += "org.apache.commons" % "commons-math3" % "3.4.1"
 
 // libraryDependencies += "org.apache.commons" % "commons-csv" % "1.1"
+
+libraryDependencies ++= Seq(
+  "com.typesafe" % "config" % "1.3.3"
+)
